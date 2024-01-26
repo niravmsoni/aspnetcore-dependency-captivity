@@ -24,3 +24,5 @@
 		- Container provides way for us to validate if there are any dependency captivity scenario present in our code
 			- Use ValidateOnScope = true (Refer Program)
 		
+		- How to fix this?
+  ![image](https://github.com/niravmsoni/aspnetcore-dependency-captivity/assets/6556021/b1b26011-ef7d-431c-b26c-bbcdbc864a65)
