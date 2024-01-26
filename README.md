@@ -26,3 +26,10 @@
 		
 		- How to fix this?
   ![image](https://github.com/niravmsoni/aspnetcore-dependency-captivity/assets/6556021/b1b26011-ef7d-431c-b26c-bbcdbc864a65)
+
+
+	- Change IReferenceGenerator to be scoped
+		- IDateTimeProvider - Let it be scoped
+		- IIncrementingCounter - Add it as singleton (Since we want to share counter across products)
+
+	- So, now DI captivity is resolved since top level svc is changed to scoped. And child dependency i.e. IIncrementing counter is singleton
