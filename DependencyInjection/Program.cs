@@ -6,15 +6,18 @@ using DependencyInjection.Transformation.Transformations;
 using DependencyInjection.Transformation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DependencyInjection.Util;
 
 // Creating default builder for application host
 using var host = Host.CreateDefaultBuilder(args)
+    .UseDefaultServiceProvider((context, options) =>
+    {
+        //Validating if there are any straight forward captive dependencies present in code?
+        options.ValidateScopes = true;
+    })
     .ConfigureServices((context, services) =>
     {
-        //Add service to IServiceCollection
         services.AddTransient<Configuration>();
-
-        //Whenever IPriceParser is used as dependency, we would get PriceParser from DI container at runtime
         services.AddTransient<IPriceParser, PriceParser>();
         services.AddTransient<IProductSource, ProductSource>();
 
@@ -23,17 +26,17 @@ using var host = Host.CreateDefaultBuilder(args)
 
         services.AddTransient<ProductImporter>();
 
-        //Since this is registered as transient, we are getting new instance every-time we request this(ProductSource, ProductTarget and ProductImporter)
-        //So in-essence there are 3 instances that get created for this svc.
-        //services.AddTransient<IImportStatistics, ImportStatistics>();
-        services.AddScoped<IImportStatistics, ImportStatistics>();
+        services.AddSingleton<IImportStatistics, ImportStatistics>();
 
-        //services.AddTransient<IProductTransformer, ProductTransformer>();
+        services.AddTransient<IProductTransformer, ProductTransformer>();
+
         services.AddScoped<IProductTransformationContext, ProductTransformationContext>();
         services.AddScoped<INameDecapitaliser, NameDecapitaliser>();
         services.AddScoped<ICurrencyNormalizer, CurrencyNormalizer>();
 
-        //Prior to build method, code is in registration Phase (Deals with IServiceCollection)
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<IReferenceAdder, ReferenceAdder>();
+        services.AddSingleton<IReferenceGenerator, ReferenceGenerator>();
     })
     .Build();
 

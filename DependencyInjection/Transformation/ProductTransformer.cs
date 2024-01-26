@@ -27,12 +27,6 @@ namespace DependencyInjection.Transformation
         {
             // Need to wrap this with using since IServiceScope implements IDisposable
             using var scope = _serviceScopeFactory.CreateScope();
-
-            // Ideally, not right way to resolve classes from container. This is called Service Locator pattern. Not recommended
-
-            // Since they are used within SCOPE - IT IS IMPORTANT TO INSTANTIATE THEM(All 3 - Context and transformations) IN SUCH A WAY THAT THEY ARE REUSED WITHIN SCOPE
-            // It can't be singleton since we don't need to share the same context for different products
-            // Hence scoped
             var transformationContext = scope.ServiceProvider.GetRequiredService<IProductTransformationContext>();
             
             // Setting product in context
@@ -40,9 +34,14 @@ namespace DependencyInjection.Transformation
 
             var nameCapitalizer = scope.ServiceProvider.GetRequiredService<INameDecapitaliser>();
             var currencyNormalizer = scope.ServiceProvider.GetRequiredService<ICurrencyNormalizer>();
+            var referenceAdder = scope.ServiceProvider.GetRequiredService<IReferenceAdder>();
 
             nameCapitalizer.Execute();
             currencyNormalizer.Execute();
+            referenceAdder.Execute();
+
+            //For slowing things down and so that we are able to generate new time from IDateTimeProvider
+            Thread.Sleep(2000);
 
             // Check if prodyct has changed, if so increment count
             if (transformationContext.IsProductChanged())
