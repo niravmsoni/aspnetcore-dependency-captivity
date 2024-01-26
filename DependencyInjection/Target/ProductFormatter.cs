@@ -6,7 +6,7 @@ namespace DependencyInjection.Target;
 
 public class ProductFormatter : IProductFormatter
 {
-    private const string HeaderLine = "Id,Name,Currency,Price,Stock";
+    private const string HeaderLine = "Id,Name,Currency,Price,Stock,Reference";
     public string Format(Product product)
     {
         var stringBuilder = new StringBuilder();
@@ -16,6 +16,7 @@ public class ProductFormatter : IProductFormatter
         appendItem(stringBuilder, product.Price.IsoCurrency, false);
         appendItem(stringBuilder, product.Price.Amount.ToString(CultureInfo.InvariantCulture), false);
         appendItem(stringBuilder, product.Stock.ToString(), false);
+        appendItem(stringBuilder, product.Reference, false);
 
         return stringBuilder.ToString();
     }

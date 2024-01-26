@@ -36,7 +36,12 @@ using var host = Host.CreateDefaultBuilder(args)
 
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IReferenceAdder, ReferenceAdder>();
-        services.AddSingleton<IReferenceGenerator, ReferenceGenerator>();
+
+        //Changing this from Singleton to Scoped since we have moved responsibility to generate counter in separate svc
+        //services.AddSingleton<IReferenceGenerator, ReferenceGenerator>();
+        services.AddScoped<IReferenceGenerator, ReferenceGenerator>();
+        services.AddSingleton<IIncrementingCounter, IncrementingCounter>();
+
     })
     .Build();
 
