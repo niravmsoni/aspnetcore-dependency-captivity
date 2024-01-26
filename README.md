@@ -3,6 +3,7 @@
 	- Hierarchy
 		- IReferenceGenerator (Top level service registered with Singleton since we have a counter here which we want to share across different items)
 			- Dependency - IDateTimeProvider (Registered as Scoped since we want different datetime for each product)
+![image](https://github.com/niravmsoni/aspnetcore-dependency-captivity/assets/6556021/2d5b0ea3-48e2-4ad9-99a7-7ce71d21fed5)
 
 		- Expected output
 			- Expect code to generate a new date-time + Increment the counter
@@ -23,3 +24,5 @@
 		- Container provides way for us to validate if there are any dependency captivity scenario present in our code
 			- Use ValidateOnScope = true (Refer Program)
 		
+		- How to fix this?
+  ![image](https://github.com/niravmsoni/aspnetcore-dependency-captivity/assets/6556021/b1b26011-ef7d-431c-b26c-bbcdbc864a65)
